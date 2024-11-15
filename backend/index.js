@@ -74,6 +74,20 @@ app.put('/employee/:id',async(request,response) => {try {
 }
 });
 
+//to delete a book 
+app.delete('/employee/:id',async(request,response)=>{
+  try{
+    const {id} = request.params;
+    const newemp = await employee.findByIdAndDelete(id);
+    if(!newemp) {return response.status(404).send({message: "employee not found"});
+    }
+    return response.status(200).send({message: "employee deleted successfully"});
+  }
+  catch (error) {
+    console.log(error.message);
+    response.status(500).send({message: error.message});
+  }
+});
 
 mongoose.connect(mongoDBURL)
   .then(() => {
