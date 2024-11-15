@@ -30,6 +30,7 @@ empname: request.body.empname,
  }
 });
 
+//to get all employees
 app.get('/employee',async(request,response) => {try {
   const newemps= await employee.find({});
   return response.status(200).json({
@@ -41,6 +42,39 @@ app.get('/employee',async(request,response) => {try {
   response.status(500).send({message: error.message});
 }
 });
+
+//to get only 1 employee
+app.get('/employee/:id',async(request,response) => {try {
+  const {id} = request.params;
+  const newemp= await employee.findById(id);
+  return response.status(200).json(newemp);
+} catch (error) {
+  console.log(error.message);
+  response.status(500).send({message: error.message});
+}
+});
+
+//to update an employee
+app.put('/employee/:id',async(request,response) => {try {
+  if(
+    !request.body.empname|| 
+    !request.body.empaddress
+    ) {
+      return response.status(400).send({message: "send all fields"});
+    }
+    const {id} = request.params;
+    const newemp = await employee.findByIdAndUpdate(id,request.body);
+    if(!newemp) {return response.status(404).send({message: "employee not found"});
+  }
+  return response.status(200).send({message: "employee update successful"});
+
+}catch (error) {
+  console.log(error.message);
+  response.status(500).send({message: error.message});
+}
+});
+
+
 mongoose.connect(mongoDBURL)
   .then(() => {
     console.log('app connected to database');
