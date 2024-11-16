@@ -11,9 +11,9 @@ const employeeschema = mongoose.Schema({
     },
 },
     {
-        timemark: true,
+        timestamps: true,
     }
 
 
 );
-export const employee = mongoose.model('employee', employeeschema);
+export const empmodel = mongoose.model('employee', employeeschema);
